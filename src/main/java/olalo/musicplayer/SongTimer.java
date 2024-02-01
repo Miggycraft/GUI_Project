@@ -1,7 +1,7 @@
 package olalo.musicplayer;
 
 public class SongTimer implements Runnable{
-    boolean running = false;
+    boolean running = true;
     int i = 0;
     
     

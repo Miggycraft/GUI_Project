@@ -4,6 +4,8 @@
  */
 package olalo.musicplayer;
 
+import com.formdev.flatlaf.FlatDarkLaf;
+import com.formdev.flatlaf.FlatLightLaf;
 import java.awt.Image;
 import java.io.File;
 import java.util.ArrayList;
@@ -20,6 +22,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.UIManager;
 import javax.swing.border.Border;
 
 
@@ -39,12 +42,13 @@ public class main extends javax.swing.JFrame {
     int musicFrame;
     AudioInputStream audioInput;
     Clip clip;
+    Thread t;
     
     // initializing icons
-    ImageIcon playIcon = getImage("/icons/play.png", 25, 25);
-    ImageIcon leftIcon = getImage("/icons/left.png", 25, 25);
-    ImageIcon rightIcon = getImage("/icons/right.png", 25, 25);
-    ImageIcon pauseIcon = getImage("/icons/pause.png", 25, 25);
+    ImageIcon playIcon = getImage("/icons/play.png", 50, 50);
+    ImageIcon leftIcon = getImage("/icons/left.png", 50, 50);
+    ImageIcon rightIcon = getImage("/icons/right.png", 50, 50);
+    ImageIcon pauseIcon = getImage("/icons/pause.png", 50, 50);
     ImageIcon stopIcon = getImage("/icons/stop.png", 25, 25);
     ImageIcon volumeMuteIcon = getImage("/icons/volume-mute.png", 25, 25);
     ImageIcon volumeLIcon = getImage("/icons/volume-low.png", 25, 25);
@@ -93,8 +97,6 @@ public class main extends javax.swing.JFrame {
      * Creates new form main
      */
     public main() {
-        Thread t = new Thread(st);
-        t.start();
         initComponents();
         initIcons();
     }
@@ -264,12 +266,15 @@ public class main extends javax.swing.JFrame {
             playMusic();
             pauseButton.setText(""); // pause
             pauseButton.setIcon(pauseIcon);
+            st.stopCount();
         }
         else{
             isPaused = true;
             pauseMusic();
             pauseButton.setText(""); // play
             pauseButton.setIcon(playIcon);
+            t = new Thread(st);
+            t.run();
         }
     }
     
@@ -351,14 +356,18 @@ public class main extends javax.swing.JFrame {
             .addGroup(topPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(topPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lengthText)
-                    .addGroup(topPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, topPanelLayout.createSequentialGroup()
-                            .addComponent(minText)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(maxText))
-                        .addComponent(audioSlide, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 549, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(topPanelLayout.createSequentialGroup()
+                        .addGroup(topPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(audioSlide, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(topPanelLayout.createSequentialGroup()
+                                .addComponent(lengthText)
+                                .addGap(0, 0, Short.MAX_VALUE)))
+                        .addContainerGap())
+                    .addGroup(topPanelLayout.createSequentialGroup()
+                        .addComponent(minText)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(maxText)
+                        .addGap(21, 21, 21))))
         );
         topPanelLayout.setVerticalGroup(
             topPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -392,12 +401,14 @@ public class main extends javax.swing.JFrame {
         leftPanelLayout.setVerticalGroup(
             leftPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(leftPanelLayout.createSequentialGroup()
-                .addGap(20, 20, 20)
                 .addComponent(songList, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(58, Short.MAX_VALUE))
+                .addGap(0, 78, Short.MAX_VALUE))
         );
 
         pauseButton.setText("play");
+        pauseButton.setMaximumSize(new java.awt.Dimension(100, 100));
+        pauseButton.setMinimumSize(new java.awt.Dimension(100, 100));
+        pauseButton.setPreferredSize(new java.awt.Dimension(100, 100));
         pauseButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 pauseButtonActionPerformed(evt);
@@ -405,6 +416,9 @@ public class main extends javax.swing.JFrame {
         });
 
         backButton.setText("back");
+        backButton.setMaximumSize(new java.awt.Dimension(100, 100));
+        backButton.setMinimumSize(new java.awt.Dimension(100, 100));
+        backButton.setPreferredSize(new java.awt.Dimension(100, 100));
         backButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 backButtonActionPerformed(evt);
@@ -412,6 +426,9 @@ public class main extends javax.swing.JFrame {
         });
 
         rightButton.setText("right");
+        rightButton.setMaximumSize(new java.awt.Dimension(100, 100));
+        rightButton.setMinimumSize(new java.awt.Dimension(100, 100));
+        rightButton.setPreferredSize(new java.awt.Dimension(100, 100));
         rightButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 rightButtonActionPerformed(evt);
@@ -424,22 +441,22 @@ public class main extends javax.swing.JFrame {
             midPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(midPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(backButton)
+                .addComponent(backButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(pauseButton)
+                .addComponent(pauseButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(rightButton)
-                .addContainerGap(26, Short.MAX_VALUE))
+                .addComponent(rightButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         midPanelLayout.setVerticalGroup(
             midPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(midPanelLayout.createSequentialGroup()
                 .addGap(16, 16, 16)
                 .addGroup(midPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(pauseButton, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(backButton)
-                    .addComponent(rightButton))
-                .addContainerGap(27, Short.MAX_VALUE))
+                    .addComponent(pauseButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(backButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(rightButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         volumeSlider.setPaintLabels(true);
@@ -472,6 +489,8 @@ public class main extends javax.swing.JFrame {
         });
 
         stopButton.setText("stop");
+        stopButton.setMaximumSize(new java.awt.Dimension(75, 75));
+        stopButton.setMinimumSize(new java.awt.Dimension(75, 75));
         stopButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 stopButtonActionPerformed(evt);
@@ -488,11 +507,10 @@ public class main extends javax.swing.JFrame {
                     .addComponent(volumeLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, rightPanelLayout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addGroup(rightPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(volumeSlider, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(rightPanelLayout.createSequentialGroup()
-                                .addGap(34, 34, 34)
-                                .addComponent(stopButton)))))
+                        .addComponent(volumeSlider, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(rightPanelLayout.createSequentialGroup()
+                        .addComponent(stopButton, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         rightPanelLayout.setVerticalGroup(
@@ -503,8 +521,8 @@ public class main extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(volumeSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(stopButton)
-                .addContainerGap(19, Short.MAX_VALUE))
+                .addComponent(stopButton, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout bottomPanelLayout = new javax.swing.GroupLayout(bottomPanel);
@@ -617,20 +635,6 @@ public class main extends javax.swing.JFrame {
         moveList(false);
     }//GEN-LAST:event_backButtonActionPerformed
 
-    private void audioSlideStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_audioSlideStateChanged
-        // TODO add your handling code here:
-        try{
-            AudioFormat format = audioInput.getFormat();
-            int frames = (int)(audioSlide.getValue() * (format.getFrameRate()));
-            lengthText.setText(secondsToMinute(audioSlide.getValue()));
-            musicFrame = frames;
-            moveAudioSection(); // TODO: FIX SHIT!
-        }
-        catch(Exception x){
-            // meow
-        }
-    }//GEN-LAST:event_audioSlideStateChanged
-
     private void aboutItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aboutItemActionPerformed
         // TODO add your handling code here:
         String message = 
@@ -650,6 +654,20 @@ public class main extends javax.swing.JFrame {
         updateMaxLength();
     }//GEN-LAST:event_directoryItemActionPerformed
 
+    private void audioSlideStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_audioSlideStateChanged
+        // TODO add your handling code here:
+        try{
+            AudioFormat format = audioInput.getFormat();
+            int frames = (int)(audioSlide.getValue() * (format.getFrameRate()));
+            lengthText.setText(secondsToMinute(audioSlide.getValue()));
+            musicFrame = frames;
+            moveAudioSection(); // TODO: FIX SHIT!
+        }
+        catch(Exception x){
+            // meow
+        }
+    }//GEN-LAST:event_audioSlideStateChanged
+
     /**
      * @param args the command line arguments
      */
@@ -660,21 +678,27 @@ public class main extends javax.swing.JFrame {
          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
          */
         try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(main.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(main.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(main.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(main.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+//                System.out.println(info.getName());
+//                if ("Metal".equals(info.getName())) {
+//                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+//                    break;
+//                }
+//            }
+        UIManager.setLookAndFeel(new FlatLightLaf());
         }
+//        } catch (ClassNotFoundException ex) {
+//            java.util.logging.Logger.getLogger(main.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        } catch (InstantiationException ex) {
+//            java.util.logging.Logger.getLogger(main.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        } catch (IllegalAccessException ex) {
+//            java.util.logging.Logger.getLogger(main.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+//            java.util.logging.Logger.getLogger(main.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        }
+            catch (Exception x){
+                    // im tired chief...
+          }
         //</editor-fold>
 
         /* Create and display the form */
