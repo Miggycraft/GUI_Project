@@ -52,12 +52,27 @@ public class main extends javax.swing.JFrame {
         return new ImageIcon(tempImage.getScaledInstance(x, y, Image.SCALE_SMOOTH));
     }
     
+    public void initIcons(){
+        backButton.setText("");
+        backButton.setIcon(leftIcon);
+        backButton.setFocusable(false);
+        rightButton.setText("");
+        rightButton.setIcon(rightIcon);
+        rightButton.setFocusable(false);
+        stopButton.setText("");
+        stopButton.setIcon(stopIcon);
+        stopButton.setFocusable(false);
+        pauseButton.setText("");
+        pauseButton.setIcon(playIcon);
+        pauseButton.setFocusable(false);
+    }
+    
     /**
      * Creates new form main
      */
     public main() {
         initComponents();
-        pauseButton.setIcon(playIcon);
+        initIcons();
     }
     
     public String secondsToMinute(double i){
@@ -177,7 +192,19 @@ public class main extends javax.swing.JFrame {
     public void resetPauseButton(){
         newMusic = true;
         isPaused = true;
-        pauseButton.setText("play");
+        pauseButton.setText(""); //play
+        pauseButton.setIcon(playIcon);
+        String music_path = song_directory + "\\" + songList.getSelectedItem().toString();
+        try{
+            File musicFile = new File(music_path);
+            if (musicFile.exists()){
+                audioInput = AudioSystem.getAudioInputStream(musicFile);
+                clip = AudioSystem.getClip();
+            }
+        }
+        catch(Exception x){ // meow
+            System.out.println(x);
+        }
     }
     
     public void updatePauseButton(){    
@@ -188,12 +215,14 @@ public class main extends javax.swing.JFrame {
         if (isPaused){ 
             isPaused = false;
             playMusic();
-            pauseButton.setText("pause");
+            pauseButton.setText(""); // pause
+            pauseButton.setIcon(pauseIcon);
         }
         else{
             isPaused = true;
             pauseMusic();
-            pauseButton.setText("play");
+            pauseButton.setText(""); // play
+            pauseButton.setIcon(playIcon);
         }
     }
     
@@ -490,6 +519,7 @@ public class main extends javax.swing.JFrame {
 
     private void pauseButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pauseButtonActionPerformed
         // TODO add your handling code here:
+        System.out.println(newMusic);
         updatePauseButton();
     }//GEN-LAST:event_pauseButtonActionPerformed
 
