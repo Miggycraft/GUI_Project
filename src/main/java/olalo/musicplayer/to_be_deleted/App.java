@@ -2,7 +2,7 @@
  * 
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-package olalo.musicplayer;
+package olalo.musicplayer.to_be_deleted;
         
 import java.util.logging.Level;
 import java.util.logging.Logger;

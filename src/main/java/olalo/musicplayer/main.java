@@ -13,17 +13,21 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.FloatControl;
 import javax.sound.sampled.UnsupportedAudioFileException;
+import javax.swing.BorderFactory;
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.border.Border;
 
 
 /**
  *
  * @author Miggy Olalo
+ * plz note because i use the default audio library the only it support are
+ * wav format :(
  */
 public class main extends javax.swing.JFrame {
     final String SUPPORTED_LISTS[] = {"wav"};
@@ -31,6 +35,7 @@ public class main extends javax.swing.JFrame {
     boolean isPaused = true;
     boolean newMusic = true;
     int lengthTextX;
+    SongTimer st = new SongTimer();
     int musicFrame;
     AudioInputStream audioInput;
     Clip clip;
@@ -56,6 +61,18 @@ public class main extends javax.swing.JFrame {
     }
     
     public void initIcons(){
+//        Border empty = BorderFactory.createEmptyBorder(4,4,4,4);
+//        
+//        backButton.setBorder(empty);
+//        backButton.setContentAreaFilled(false);
+//        rightButton.setBorder(empty);
+//        rightButton.setContentAreaFilled(false);
+//        stopButton.setBorder(empty);
+//        stopButton.setContentAreaFilled(false);
+//        pauseButton.setBorder(empty);
+//        pauseButton.setContentAreaFilled(false);
+//        ugly
+        
         backButton.setText("");
         backButton.setIcon(leftIcon);
         backButton.setFocusable(false);
@@ -76,6 +93,8 @@ public class main extends javax.swing.JFrame {
      * Creates new form main
      */
     public main() {
+        Thread t = new Thread(st);
+        t.start();
         initComponents();
         initIcons();
     }
@@ -321,9 +340,9 @@ public class main extends javax.swing.JFrame {
 
         minText.setText("0:00");
 
-        maxText.setText("maxLength");
+        maxText.setText("0:00");
 
-        lengthText.setText("lengthText");
+        lengthText.setText("0:00");
 
         javax.swing.GroupLayout topPanelLayout = new javax.swing.GroupLayout(topPanel);
         topPanel.setLayout(topPanelLayout);
@@ -415,12 +434,12 @@ public class main extends javax.swing.JFrame {
         midPanelLayout.setVerticalGroup(
             midPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(midPanelLayout.createSequentialGroup()
-                .addGap(29, 29, 29)
+                .addGap(16, 16, 16)
                 .addGroup(midPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(pauseButton, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(backButton)
                     .addComponent(rightButton))
-                .addContainerGap(14, Short.MAX_VALUE))
+                .addContainerGap(27, Short.MAX_VALUE))
         );
 
         volumeSlider.setPaintLabels(true);
