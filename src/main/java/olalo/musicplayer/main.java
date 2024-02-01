@@ -6,6 +6,7 @@ package olalo.musicplayer;
 
 import com.formdev.flatlaf.FlatDarkLaf;
 import com.formdev.flatlaf.FlatLightLaf;
+import java.awt.Color;
 import java.awt.Image;
 import java.io.File;
 import java.util.ArrayList;
@@ -22,6 +23,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.border.Border;
 
@@ -37,6 +39,7 @@ public class main extends javax.swing.JFrame {
     String song_directory = "NULL";
     boolean isPaused = true;
     boolean newMusic = true;
+    boolean whiteTheme = true;
     int lengthTextX;
     SongTimer st = new SongTimer();
     int musicFrame;
@@ -329,6 +332,7 @@ public class main extends javax.swing.JFrame {
         menuBar = new javax.swing.JMenuBar();
         fileMenu = new javax.swing.JMenu();
         directoryItem = new javax.swing.JMenuItem();
+        themeItem = new javax.swing.JMenuItem();
         helpMenu = new javax.swing.JMenu();
         aboutItem = new javax.swing.JMenuItem();
 
@@ -576,6 +580,14 @@ public class main extends javax.swing.JFrame {
         });
         fileMenu.add(directoryItem);
 
+        themeItem.setText("Change Theme");
+        themeItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                themeItemActionPerformed(evt);
+            }
+        });
+        fileMenu.add(themeItem);
+
         menuBar.add(fileMenu);
 
         helpMenu.setText("Help");
@@ -686,6 +698,46 @@ public class main extends javax.swing.JFrame {
         updateMaxLength();
     }//GEN-LAST:event_songListActionPerformed
 
+    public void changeDaColor(Color c){
+        topPanel.setBackground(c);
+        bottomPanel.setBackground(c);
+        leftPanel.setBackground(c);
+        midPanel.setBackground(c);
+        rightPanel.setBackground(c);
+    }
+    
+    public void changeTheme(){
+        if (whiteTheme){
+            try{ // make it dark
+                UIManager.setLookAndFeel(new FlatDarkLaf());        
+                SwingUtilities.updateComponentTreeUI(this);
+                this.pack();
+                changeDaColor(new Color(41, 39, 37));
+                whiteTheme = false;
+            }
+            catch(Exception x){
+                System.out.println(x);
+            }
+        }
+        else{ // make it light
+            try{
+                UIManager.setLookAndFeel(new FlatLightLaf());        
+                SwingUtilities.updateComponentTreeUI(this);
+                this.pack();
+                changeDaColor(Color.WHITE);
+                whiteTheme = true;
+        }
+        catch(Exception x){
+            System.out.println(x);
+        }
+        }
+    }
+    
+    private void themeItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_themeItemActionPerformed
+        // TODO add your handling code here:
+        changeTheme();
+    }//GEN-LAST:event_themeItemActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -746,6 +798,7 @@ public class main extends javax.swing.JFrame {
     private javax.swing.JPanel rightPanel;
     private javax.swing.JComboBox<String> songList;
     private javax.swing.JButton stopButton;
+    private javax.swing.JMenuItem themeItem;
     private javax.swing.JPanel topPanel;
     private javax.swing.JLabel volumeLabel;
     private javax.swing.JSlider volumeSlider;
