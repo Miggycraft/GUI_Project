@@ -121,7 +121,7 @@ public class main extends javax.swing.JFrame {
         else if (currVol > 34){
             volumeLabel.setIcon(volumeMIcon);
         }
-        else if (currVol > 1){
+        else if (currVol >= 1){
             volumeLabel.setIcon(volumeLIcon);
         }
         else{ 
@@ -165,9 +165,10 @@ public class main extends javax.swing.JFrame {
     }
     
     public void setVolume(){
-        if (clip == null){
+        if (clip == null){ // todo bug here if spam stop lol
             return;
         }
+        
         float volVal = (float)(-80 + (.8 * volumeSlider.getValue()));
         FloatControl testLang = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
         testLang.setValue(volVal);
@@ -255,6 +256,9 @@ public class main extends javax.swing.JFrame {
                 audioInput = AudioSystem.getAudioInputStream(musicFile);
                 clip = AudioSystem.getClip();
                 clip.stop();
+                audioSlide.setValue(0);
+                volumeSlider.setValue(100);
+                volumeLabel.setText("100");
             }
         }
         catch(Exception x){ // meow
