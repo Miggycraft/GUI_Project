@@ -40,6 +40,7 @@ public class main extends javax.swing.JFrame {
     boolean isPaused = true;
     boolean newMusic = true;
     boolean whiteTheme = true;
+    boolean holdingSlider = false;
     int lengthTextX;
     SongTimer st;
     int musicFrame;
@@ -102,7 +103,7 @@ public class main extends javax.swing.JFrame {
     public main() {
         initComponents();
         initIcons();
-        this.st = new SongTimer(audioSlide);
+        this.st = new SongTimer(audioSlide, lengthText);
     }
     
     public String secondsToMinute(double i){
@@ -236,6 +237,7 @@ public class main extends javax.swing.JFrame {
                 select = maxSize -1;
         }
         
+        lengthText.setText("0:00");
         songList.setSelectedIndex(select);
     }
     
@@ -243,6 +245,7 @@ public class main extends javax.swing.JFrame {
         newMusic = true;
         isPaused = true;
         st.resetCount();
+        lengthText.setText("0:00");
         pauseButton.setText(""); //play
         pauseButton.setIcon(playIcon);
         String music_path = song_directory + "\\" + songList.getSelectedItem().toString();
@@ -292,7 +295,6 @@ public class main extends javax.swing.JFrame {
     
     public void moveAudioSection(){
         clip.setFramePosition(musicFrame);
-//        clip.start();
     }
     
     public void updateSonglist(String path){
@@ -360,18 +362,17 @@ public class main extends javax.swing.JFrame {
         audioSlide.setPaintTicks(true);
         audioSlide.setToolTipText("");
         audioSlide.setValue(0);
-        audioSlide.addAncestorListener(new javax.swing.event.AncestorListener() {
-            public void ancestorAdded(javax.swing.event.AncestorEvent evt) {
-            }
-            public void ancestorMoved(javax.swing.event.AncestorEvent evt) {
-                audioSlideAncestorMoved(evt);
-            }
-            public void ancestorRemoved(javax.swing.event.AncestorEvent evt) {
-            }
-        });
         audioSlide.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 audioSlideStateChanged(evt);
+            }
+        });
+        audioSlide.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                audioSlideMousePressed(evt);
+            }
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                audioSlideMouseReleased(evt);
             }
         });
 
@@ -664,16 +665,18 @@ public class main extends javax.swing.JFrame {
 
     private void audioSlideStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_audioSlideStateChanged
         // TODO add your handling code here:
-        try{
-            AudioFormat format = audioInput.getFormat();
-            int frames = (int)(audioSlide.getValue() * (format.getFrameRate()));
-            lengthText.setText(secondsToMinute(audioSlide.getValue()));
-            musicFrame = frames;
-            st.setCount(audioSlide.getValue());
-            moveAudioSection(); // TODO: FIX SHIT!
-        }
-        catch(Exception x){
-            // meow
+        if (holdingSlider){
+            try{
+                AudioFormat format = audioInput.getFormat();
+                int frames = (int)(audioSlide.getValue() * (format.getFrameRate()));
+                lengthText.setText(secondsToMinute(audioSlide.getValue()));
+                musicFrame = frames;
+                st.setCount(audioSlide.getValue());
+                moveAudioSection();
+            }
+            catch(Exception x){
+                // meow
+            }
         }
     }//GEN-LAST:event_audioSlideStateChanged
 
@@ -709,7 +712,6 @@ public class main extends javax.swing.JFrame {
 
     private void pauseButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pauseButtonActionPerformed
         // TODO add your handling code here:
-        System.out.println(newMusic);
         updatePauseButton();
     }//GEN-LAST:event_pauseButtonActionPerformed
 
@@ -759,10 +761,15 @@ public class main extends javax.swing.JFrame {
         changeTheme();
     }//GEN-LAST:event_themeItemActionPerformed
 
-    private void audioSlideAncestorMoved(javax.swing.event.AncestorEvent evt) {//GEN-FIRST:event_audioSlideAncestorMoved
+    private void audioSlideMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_audioSlideMousePressed
         // TODO add your handling code here:
-        
-    }//GEN-LAST:event_audioSlideAncestorMoved
+        holdingSlider = true;
+    }//GEN-LAST:event_audioSlideMousePressed
+
+    private void audioSlideMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_audioSlideMouseReleased
+        // TODO add your handling code here:
+        holdingSlider = false;
+    }//GEN-LAST:event_audioSlideMouseReleased
 
     /**
      * @param args the command line arguments

@@ -151,8 +151,9 @@
             <Property name="value" type="int" value="0"/>
           </Properties>
           <Events>
-            <EventHandler event="ancestorMoved" listener="javax.swing.event.AncestorListener" parameters="javax.swing.event.AncestorEvent" handler="audioSlideAncestorMoved"/>
             <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="audioSlideStateChanged"/>
+            <EventHandler event="mousePressed" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="audioSlideMousePressed"/>
+            <EventHandler event="mouseReleased" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="audioSlideMouseReleased"/>
           </Events>
         </Component>
         <Component class="javax.swing.JLabel" name="minText">

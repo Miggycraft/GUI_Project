@@ -1,14 +1,17 @@
 package olalo.musicplayer;
 
+import javax.swing.JLabel;
 import javax.swing.JSlider;
 
 public class SongTimer implements Runnable{
     JSlider audioSlider;
+    JLabel text;
     boolean running = true;
     int i = 0;
     
-    public SongTimer(JSlider audioSlider){
+    public SongTimer(JSlider audioSlider, JLabel text){
         this.audioSlider = audioSlider;
+        this.text = text;
     }
     
     @Override
@@ -16,14 +19,23 @@ public class SongTimer implements Runnable{
         running = true;
         while (running){
             try{
+                updateSlider();
                 Thread.sleep(1000);
                 i++;
-                updateSlider();
             }
             catch(Exception x){
                 System.out.println(x);
             }
         }
+    }
+    
+    public String secondsToMinute(int x){
+        int min = (int)(x / 60);
+        int sec = (int)(x % 60);
+        if (sec < 10){
+            return min + ":0" + sec;
+        }
+        return min + ":" + sec;
     }
     
     public void stopCount(){
@@ -35,6 +47,7 @@ public class SongTimer implements Runnable{
     
     public void updateSlider(){
         audioSlider.setValue(i);
+        text.setText(secondsToMinute(i));
     }
     
     public void resetCount(){
