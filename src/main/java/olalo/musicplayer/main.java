@@ -4,6 +4,7 @@
  */
 package olalo.musicplayer;
 
+import java.awt.Image;
 import java.io.File;
 import java.util.ArrayList;
 import javax.sound.sampled.AudioFormat;
@@ -14,6 +15,7 @@ import javax.sound.sampled.FloatControl;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
@@ -33,11 +35,29 @@ public class main extends javax.swing.JFrame {
     AudioInputStream audioInput;
     Clip clip;
     
+    // initializing icons
+    ImageIcon playIcon = getImage("/icons/play.png", 25, 25);
+    ImageIcon leftIcon = getImage("/icons/left.png", 25, 25);
+    ImageIcon rightIcon = getImage("/icons/right.png", 25, 25);
+    ImageIcon pauseIcon = getImage("/icons/pause.png", 25, 25);
+    ImageIcon stopIcon = getImage("/icons/stop.png", 25, 25);
+    ImageIcon volumeIcon = getImage("/icons/volume.png", 25, 25);
+    ImageIcon musicIcon = getImage("/icons/music-alt.png", 25, 25);
+    
+    //
+    
+    public ImageIcon getImage(String p, int x, int y){ // just to clean this fuckign piece of shit image AAAAAAAAAAAAAAA!!!!
+        ImageIcon temp = new ImageIcon(getClass().getResource(p));
+        Image tempImage = temp.getImage();
+        return new ImageIcon(tempImage.getScaledInstance(x, y, Image.SCALE_SMOOTH));
+    }
+    
     /**
      * Creates new form main
      */
     public main() {
         initComponents();
+        pauseButton.setIcon(playIcon);
     }
     
     public String secondsToMinute(double i){
@@ -225,6 +245,8 @@ public class main extends javax.swing.JFrame {
         stopButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Music Player App");
+        setResizable(false);
 
         audioSlide.setPaintLabels(true);
         audioSlide.setPaintTicks(true);
@@ -249,15 +271,14 @@ public class main extends javax.swing.JFrame {
             .addGroup(topPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(topPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(audioSlide, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, topPanelLayout.createSequentialGroup()
-                        .addComponent(minText)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(maxText))
-                    .addGroup(topPanelLayout.createSequentialGroup()
-                        .addComponent(lengthText)
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap())
+                    .addComponent(lengthText)
+                    .addGroup(topPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, topPanelLayout.createSequentialGroup()
+                            .addComponent(minText)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(maxText))
+                        .addComponent(audioSlide, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 549, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         topPanelLayout.setVerticalGroup(
             topPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
