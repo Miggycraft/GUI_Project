@@ -301,7 +301,13 @@ public class main extends javax.swing.JFrame {
                 songs.add(s);
             }
         }
-        songList.setModel(new DefaultComboBoxModel(songs.toArray()));
+        if (songs.size() > 0){
+            songList.setModel(new DefaultComboBoxModel(songs.toArray()));
+            updateMaxLength();
+        }
+        else{
+            songList.setModel(new DefaultComboBoxModel());
+        }
     }
 
     /**
@@ -639,7 +645,6 @@ public class main extends javax.swing.JFrame {
         f.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY); 
         f.showOpenDialog(null);
         updateSonglist(f.getSelectedFile().toString());
-        updateMaxLength();
     }//GEN-LAST:event_directoryItemActionPerformed
 
     private void audioSlideStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_audioSlideStateChanged
