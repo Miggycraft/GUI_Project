@@ -41,7 +41,10 @@ public class main extends javax.swing.JFrame {
     ImageIcon rightIcon = getImage("/icons/right.png", 25, 25);
     ImageIcon pauseIcon = getImage("/icons/pause.png", 25, 25);
     ImageIcon stopIcon = getImage("/icons/stop.png", 25, 25);
-    ImageIcon volumeIcon = getImage("/icons/volume.png", 25, 25);
+    ImageIcon volumeMuteIcon = getImage("/icons/volume-mute.png", 25, 25);
+    ImageIcon volumeLIcon = getImage("/icons/volume-low.png", 25, 25);
+    ImageIcon volumeMIcon = getImage("/icons/volume-mid.png", 25, 25);
+    ImageIcon volumeHIcon = getImage("/icons/volume-high.png", 25, 25);
     ImageIcon musicIcon = getImage("/icons/music-alt1.png", 100, 100);
     
     //
@@ -66,6 +69,7 @@ public class main extends javax.swing.JFrame {
         pauseButton.setIcon(playIcon);
         pauseButton.setFocusable(false);
         this.setIconImage(musicIcon.getImage());
+        volumeLabel.setIcon(volumeHIcon);
     }
     
     /**
@@ -80,6 +84,22 @@ public class main extends javax.swing.JFrame {
         int min = (int)(i / 60);
         int sec = (int)(i % 60);
         return min + ":" + sec;
+    }
+    
+    public void updateVolumeIcon(){
+        int currVol = volumeSlider.getValue();
+        if (currVol > 67){
+            volumeLabel.setIcon(volumeHIcon);
+        }
+        else if (currVol > 34){
+            volumeLabel.setIcon(volumeMIcon);
+        }
+        else if (currVol > 1){
+            volumeLabel.setIcon(volumeLIcon);
+        }
+        else{ 
+            volumeLabel.setIcon(volumeMuteIcon);
+        }
     }
     
     public void updateMaxLength(){
@@ -271,7 +291,6 @@ public class main extends javax.swing.JFrame {
         bottomPanel = new javax.swing.JPanel();
         leftPanel = new javax.swing.JPanel();
         songList = new javax.swing.JComboBox<>();
-        directoryButton = new javax.swing.JButton();
         midPanel = new javax.swing.JPanel();
         pauseButton = new javax.swing.JButton();
         backButton = new javax.swing.JButton();
@@ -282,6 +301,7 @@ public class main extends javax.swing.JFrame {
         stopButton = new javax.swing.JButton();
         menuBar = new javax.swing.JMenuBar();
         fileMenu = new javax.swing.JMenu();
+        directoryItem = new javax.swing.JMenuItem();
         helpMenu = new javax.swing.JMenu();
         aboutItem = new javax.swing.JMenuItem();
 
@@ -335,17 +355,9 @@ public class main extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        songList.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         songList.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 songListActionPerformed(evt);
-            }
-        });
-
-        directoryButton.setText("Directory");
-        directoryButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                directoryButtonActionPerformed(evt);
             }
         });
 
@@ -355,21 +367,15 @@ public class main extends javax.swing.JFrame {
             leftPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(leftPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(leftPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(songList, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(leftPanelLayout.createSequentialGroup()
-                        .addComponent(directoryButton)
-                        .addGap(0, 52, Short.MAX_VALUE)))
+                .addComponent(songList, 0, 130, Short.MAX_VALUE)
                 .addContainerGap())
         );
         leftPanelLayout.setVerticalGroup(
             leftPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(leftPanelLayout.createSequentialGroup()
-                .addGap(15, 15, 15)
+                .addGap(20, 20, 20)
                 .addComponent(songList, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(directoryButton)
-                .addContainerGap(34, Short.MAX_VALUE))
+                .addContainerGap(58, Short.MAX_VALUE))
         );
 
         pauseButton.setText("play");
@@ -464,19 +470,22 @@ public class main extends javax.swing.JFrame {
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, rightPanelLayout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addGroup(rightPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(volumeSlider, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(stopButton, javax.swing.GroupLayout.Alignment.TRAILING))))
+                            .addComponent(volumeSlider, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(rightPanelLayout.createSequentialGroup()
+                                .addGap(34, 34, 34)
+                                .addComponent(stopButton)))))
                 .addContainerGap())
         );
         rightPanelLayout.setVerticalGroup(
             rightPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, rightPanelLayout.createSequentialGroup()
-                .addContainerGap(38, Short.MAX_VALUE)
+            .addGroup(rightPanelLayout.createSequentialGroup()
+                .addGap(19, 19, 19)
                 .addComponent(volumeLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(volumeSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(stopButton))
+                .addComponent(stopButton)
+                .addContainerGap(19, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout bottomPanelLayout = new javax.swing.GroupLayout(bottomPanel);
@@ -495,13 +504,23 @@ public class main extends javax.swing.JFrame {
             bottomPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(bottomPanelLayout.createSequentialGroup()
                 .addGroup(bottomPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(leftPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(rightPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(rightPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(bottomPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(midPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(leftPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
-            .addComponent(midPanel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         fileMenu.setText("File");
+
+        directoryItem.setText("Open Directory");
+        directoryItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                directoryItemActionPerformed(evt);
+            }
+        });
+        fileMenu.add(directoryItem);
+
         menuBar.add(fileMenu);
 
         helpMenu.setText("Help");
@@ -537,15 +556,6 @@ public class main extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void directoryButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_directoryButtonActionPerformed
-        // TODO add your handling code here:
-        JFileChooser f = new JFileChooser();
-        f.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY); 
-        f.showOpenDialog(null);
-        updateSonglist(f.getSelectedFile().toString());
-        updateMaxLength();
-    }//GEN-LAST:event_directoryButtonActionPerformed
-
     private void pauseButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pauseButtonActionPerformed
         // TODO add your handling code here:
         System.out.println(newMusic);
@@ -560,6 +570,7 @@ public class main extends javax.swing.JFrame {
         // TODO add your handling code here:
         setVolume();
         volumeLabel.setText(volumeSlider.getValue() + "");
+        updateVolumeIcon();
     }//GEN-LAST:event_volumeSliderStateChanged
 
     private void volumeSliderAncestorMoved(javax.swing.event.AncestorEvent evt) {//GEN-FIRST:event_volumeSliderAncestorMoved
@@ -611,6 +622,15 @@ public class main extends javax.swing.JFrame {
         JOptionPane.showMessageDialog(this, message, "About Us", JOptionPane.INFORMATION_MESSAGE);
     }//GEN-LAST:event_aboutItemActionPerformed
 
+    private void directoryItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_directoryItemActionPerformed
+        // TODO add your handling code here:
+        JFileChooser f = new JFileChooser();
+        f.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY); 
+        f.showOpenDialog(null);
+        updateSonglist(f.getSelectedFile().toString());
+        updateMaxLength();
+    }//GEN-LAST:event_directoryItemActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -651,7 +671,7 @@ public class main extends javax.swing.JFrame {
     private javax.swing.JSlider audioSlide;
     private javax.swing.JButton backButton;
     private javax.swing.JPanel bottomPanel;
-    private javax.swing.JButton directoryButton;
+    private javax.swing.JMenuItem directoryItem;
     private javax.swing.JMenu fileMenu;
     private javax.swing.JMenu helpMenu;
     private javax.swing.JPanel leftPanel;
