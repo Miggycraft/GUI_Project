@@ -42,7 +42,7 @@ public class main extends javax.swing.JFrame {
     ImageIcon pauseIcon = getImage("/icons/pause.png", 25, 25);
     ImageIcon stopIcon = getImage("/icons/stop.png", 25, 25);
     ImageIcon volumeIcon = getImage("/icons/volume.png", 25, 25);
-    ImageIcon musicIcon = getImage("/icons/music-alt.png", 25, 25);
+    ImageIcon musicIcon = getImage("/icons/music-alt1.png", 100, 100);
     
     //
     
@@ -65,6 +65,7 @@ public class main extends javax.swing.JFrame {
         pauseButton.setText("");
         pauseButton.setIcon(playIcon);
         pauseButton.setFocusable(false);
+        this.setIconImage(musicIcon.getImage());
     }
     
     /**
@@ -196,10 +197,17 @@ public class main extends javax.swing.JFrame {
         pauseButton.setIcon(playIcon);
         String music_path = song_directory + "\\" + songList.getSelectedItem().toString();
         try{
+            /*
+            the first clip.stop() stops whatever the current clip is located to
+            then it opens the new clip via path directory and then stops it as well
+            what the fuck?  
+            */
+            clip.stop();
             File musicFile = new File(music_path);
             if (musicFile.exists()){
                 audioInput = AudioSystem.getAudioInputStream(musicFile);
                 clip = AudioSystem.getClip();
+                clip.stop();
             }
         }
         catch(Exception x){ // meow
@@ -272,6 +280,10 @@ public class main extends javax.swing.JFrame {
         volumeSlider = new javax.swing.JSlider();
         volumeLabel = new javax.swing.JLabel();
         stopButton = new javax.swing.JButton();
+        menuBar = new javax.swing.JMenuBar();
+        fileMenu = new javax.swing.JMenu();
+        helpMenu = new javax.swing.JMenu();
+        aboutItem = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Music Player App");
@@ -489,6 +501,23 @@ public class main extends javax.swing.JFrame {
             .addComponent(midPanel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
+        fileMenu.setText("File");
+        menuBar.add(fileMenu);
+
+        helpMenu.setText("Help");
+
+        aboutItem.setText("About");
+        aboutItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                aboutItemActionPerformed(evt);
+            }
+        });
+        helpMenu.add(aboutItem);
+
+        menuBar.add(helpMenu);
+
+        setJMenuBar(menuBar);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -546,8 +575,6 @@ public class main extends javax.swing.JFrame {
     private void stopButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stopButtonActionPerformed
         // TODO add your handling code here:
         resetPauseButton();
-        if (isPaused)
-            clip.stop();
     }//GEN-LAST:event_stopButtonActionPerformed
 
     private void rightButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rightButtonActionPerformed
@@ -573,6 +600,16 @@ public class main extends javax.swing.JFrame {
             // meow
         }
     }//GEN-LAST:event_audioSlideStateChanged
+
+    private void aboutItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aboutItemActionPerformed
+        // TODO add your handling code here:
+        String message = 
+                "Written By: Manuel A. Olalo Jr.\n"
+                + "CJ Narvaez\n"
+                + "Leusor Ethan Dulzo\n"
+                + "Mary Joyce Gloria";
+        JOptionPane.showMessageDialog(this, message, "About Us", JOptionPane.INFORMATION_MESSAGE);
+    }//GEN-LAST:event_aboutItemActionPerformed
 
     /**
      * @param args the command line arguments
@@ -610,13 +647,17 @@ public class main extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenuItem aboutItem;
     private javax.swing.JSlider audioSlide;
     private javax.swing.JButton backButton;
     private javax.swing.JPanel bottomPanel;
     private javax.swing.JButton directoryButton;
+    private javax.swing.JMenu fileMenu;
+    private javax.swing.JMenu helpMenu;
     private javax.swing.JPanel leftPanel;
     private javax.swing.JLabel lengthText;
     private javax.swing.JLabel maxText;
+    private javax.swing.JMenuBar menuBar;
     private javax.swing.JPanel midPanel;
     private javax.swing.JLabel minText;
     private javax.swing.JButton pauseButton;
