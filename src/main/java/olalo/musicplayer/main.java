@@ -33,6 +33,12 @@ import javax.swing.border.Border;
  * @author Miggy Olalo
  * plz note because i use the default audio library the only it support are
  * wav format :(
+ * todo:
+ * 1st stop doesn't reset the volume
+ * buggy with when selecting a music without playing it
+ *      this bug occurs when i select a music, play it, then move to a next music
+ *      while in the next music (without clicking play next), changing the audio
+ *      causes the bug.
  */
 public class main extends javax.swing.JFrame {
     final String SUPPORTED_LISTS[] = {"wav"};
@@ -347,6 +353,7 @@ public class main extends javax.swing.JFrame {
         fileMenu = new javax.swing.JMenu();
         directoryItem = new javax.swing.JMenuItem();
         themeItem = new javax.swing.JMenuItem();
+        exitItem = new javax.swing.JMenuItem();
         helpMenu = new javax.swing.JMenu();
         aboutItem = new javax.swing.JMenuItem();
 
@@ -610,6 +617,14 @@ public class main extends javax.swing.JFrame {
         });
         fileMenu.add(themeItem);
 
+        exitItem.setText("Exit");
+        exitItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                exitItemActionPerformed(evt);
+            }
+        });
+        fileMenu.add(exitItem);
+
         menuBar.add(fileMenu);
 
         helpMenu.setText("Help");
@@ -648,10 +663,8 @@ public class main extends javax.swing.JFrame {
     private void aboutItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aboutItemActionPerformed
         // TODO add your handling code here:
         String message = 
-                "Written By: Manuel A. Olalo Jr.\n"
-                + "CJ Narvaez\n"
-                + "Leusor Ethan Dulzo\n"
-                + "Mary Joyce Gloria";
+                "Written By: Miggy. \n"
+                + "Version 1.1";        
         JOptionPane.showMessageDialog(this, message, "About Us", JOptionPane.INFORMATION_MESSAGE);
     }//GEN-LAST:event_aboutItemActionPerformed
 
@@ -771,6 +784,11 @@ public class main extends javax.swing.JFrame {
         holdingSlider = false;
     }//GEN-LAST:event_audioSlideMouseReleased
 
+    private void exitItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitItemActionPerformed
+        // TODO add your handling code here:
+        System.exit(0);
+    }//GEN-LAST:event_exitItemActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -818,6 +836,7 @@ public class main extends javax.swing.JFrame {
     private javax.swing.JButton backButton;
     private javax.swing.JPanel bottomPanel;
     private javax.swing.JMenuItem directoryItem;
+    private javax.swing.JMenuItem exitItem;
     private javax.swing.JMenu fileMenu;
     private javax.swing.JMenu helpMenu;
     private javax.swing.JPanel leftPanel;
